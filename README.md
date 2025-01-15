@@ -36,12 +36,12 @@ pip install -r requirements.txt
 ---
 
 ## Usage
-** Database Requirements **
+**Database Requirements**
 The database must include the following:
 
-- Posts Table:
+- **Posts Table**:
    Columns: author, date.
-- Authors Table:
+- **Authors Table**:
    Columns: friends_count, followers_count, statuses_count, location.
    Optional: label column for group-based analysis.
 
@@ -65,26 +65,20 @@ statuses_count
 
 ## Graphs Generated
 When analyzing more than one population, the following graphs are created and saved as PNG files:
+**For each population**
+- Population_X_followers_count_range
+- Population_X_friends_count_range
+- Population_X_statuses_count_range
+- Population_X_top_authors
+- Population_X_tweet_distribution
 
-Doctor-Related Graphs
-doctor_followers_count_range
-doctor_friends_count_range
-doctor_statuses_count_range
-doctor_top_authors
-doctor_tweet_distribution
-Nurse-Related Graphs
-nurse_followers_count_range
-nurse_friends_count_range
-nurse_statuses_count_range
-nurse_top_authors
-nurse_tweet_distribution
-Multi-Population Comparative Graphs
-Followers_Count_vs_Posts_Count_for_All_Groups
-Friends_Count_Range_Merged
-Posts_Count_Range_Merged
-Tweet_Distribution_by_Month_for_All_Groups
+**Multi-Population Comparative Graphs**
+- Followers_Count_vs_Posts_Count_for_All_Groups
+- Friends_Count_Range_Merged
+- Posts_Count_Range_Merged
+- Tweet_Distribution_by_Month_for_All_Groups
 
-## Author
+## Authors
 - Shay Herling 
 - Ofek Kachlon
 - Eden Naroditsky
