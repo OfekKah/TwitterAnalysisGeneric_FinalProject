@@ -42,11 +42,19 @@ The database must include the following:
 
 - **Posts Table**:
   
-   Columns: author, date.
+   Columns:
+     - author
+     - author_screen_name
+     - date
   
 - **Authors Table**:
   
-   Columns: friends_count, followers_count, statuses_count, location.
+   Columns:
+     - friends_count
+     - followers_count
+     - statuses_count
+     - location
+     - content
   
    Optional: label column for group-based analysis.
 
