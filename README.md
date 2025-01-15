@@ -36,14 +36,14 @@ pip install -r requirements.txt
 ---
 
 ## Usage
-Database Requirements
+** Database Requirements **
 The database must include the following:
 
-Posts Table:
-Columns: author, date.
-Authors Table:
-Columns: friends_count, followers_count, statuses_count, location.
-Optional: label column for group-based analysis.
+- Posts Table:
+   Columns: author, date.
+- Authors Table:
+   Columns: friends_count, followers_count, statuses_count, location.
+   Optional: label column for group-based analysis.
 
 ---
 
@@ -85,3 +85,7 @@ Posts_Count_Range_Merged
 Tweet_Distribution_by_Month_for_All_Groups
 
 ## Author
+- Shay Herling 
+- Ofek Kachlon
+- Eden Naroditsky
+- Shahar Revivo
