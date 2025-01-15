@@ -43,20 +43,20 @@ The database must include the following tables and columns with the exact names:
 - **Posts Table**:
   
    Columns:
-     - author
-     - author_screen_name
-     - date
+     - `author`
+     - `author_screen_name`
+     - `date`
   
 - **Authors Table**:
   
    Columns:
-     - friends_count
-     - followers_count
-     - statuses_count
-     - location
-     - content
+     - `friends_count`
+     - `followers_count`
+     - `statuses_count`
+     - `location`
+     - `content`
   
-   Optional: label column for group-based analysis.
+   Optional: `label` column for group-based analysis.
 
 ---
 
@@ -95,8 +95,8 @@ The database must include the following tables and columns with the exact names:
      
      A CSV file named summary_statistics.csv, containing aggregated statistics for the following columns:
       - `friends_count`
-      - followers_count
-      - statuses_count
+      - `followers_count`
+      - `statuses_count`
     
      Additionally, the CSV includes a group column to indicate the population to which the statistics belong.
 
