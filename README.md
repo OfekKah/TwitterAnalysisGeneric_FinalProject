@@ -94,7 +94,7 @@ The database must include the following tables and columns with the exact names:
    - **Summary Statistics**:
      
      A CSV file named summary_statistics.csv, containing aggregated statistics for the following columns:
-      - friends_count
+      - `friends_count`
       - followers_count
       - statuses_count
     
