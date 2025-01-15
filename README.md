@@ -60,29 +60,29 @@ The database must include the following:
      
       **When analyzing more than one population, the following graphs are created and saved as PNG files:**
      
-         **For each population**:
-         - Population_X_followers_count_range
-         - Population_X_friends_count_range
-         - Population_X_statuses_count_range
-         - Population_X_top_authors
-         - Population_X_top_countries
-         - Population_X_tweet_distribution
-         
-         **Multi-Population Comparative Graphs**:
-         - Followers_Count_vs_Posts_Count_for_All_Groups
-         - Friends_Count_Range_Merged
-         - Posts_Count_Range_Merged
-         - Tweet_Distribution_by_Month_for_All_Groups
+      **For each population**:
+      - Population_X_followers_count_range
+      - Population_X_friends_count_range
+      - Population_X_statuses_count_range
+      - Population_X_top_authors
+      - Population_X_top_countries
+      - Population_X_tweet_distribution
+      
+      **Multi-Population Comparative Graphs**:
+      - Followers_Count_vs_Posts_Count_for_All_Groups
+      - Friends_Count_Range_Merged
+      - Posts_Count_Range_Merged
+      - Tweet_Distribution_by_Month_for_All_Groups
     
        **When analyzing one population, the following graphs are created and saved as PNG files:**
      
-         - All_Populations_followers_count_range
-         - All_Populations_friends_count_range
-         - All_Populations_statuses_count_range
-         - All_Populations_top_authors
-         - All_Populations_top_countries
-         - All_Populations_tweet_distribution
-      
+      - All_Populations_followers_count_range
+      - All_Populations_friends_count_range
+      - All_Populations_statuses_count_range
+      - All_Populations_top_authors
+      - All_Populations_top_countries
+      - All_Populations_tweet_distribution
+   
    - **Summary Statistics**:
      
      A CSV file named summary_statistics.csv, containing aggregated statistics for the following columns:
