@@ -78,6 +78,7 @@ The database must include the following tables and columns with the exact names:
       
       Multi-Population Comparative Graphs:
       - Followers_Count_vs_Posts_Count_for_All_Groups
+      - Followers_Count_Range_Merged
       - Friends_Count_Range_Merged
       - Posts_Count_Range_Merged
       - Tweet_Distribution_by_Month_for_All_Groups
