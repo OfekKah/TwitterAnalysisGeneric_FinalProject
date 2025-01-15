@@ -65,6 +65,7 @@ The database must include the following:
       - Population_X_friends_count_range
       - Population_X_statuses_count_range
       - Population_X_top_authors
+      - Population_X_top_countries
       - Population_X_tweet_distribution
       
       **Multi-Population Comparative Graphs**
@@ -74,13 +75,22 @@ The database must include the following:
       - Tweet_Distribution_by_Month_for_All_Groups
     
        When analyzing one population, the following graphs are created and saved as PNG files:
-      .......................................
+     
+         - All_Populations_followers_count_range
+         - All_Populations_friends_count_range
+         - All_Populations_statuses_count_range
+         - All_Populations_top_authors
+         - All_Populations_top_countries
+         - All_Populations_tweet_distribution
+      
    - **Summary Statistics**:
      
      A CSV file named summary_statistics.csv, containing aggregated statistics for the following columns:
       - friends_count
       - followers_count
       - statuses_count
+    
+     Additionally, the CSV includes a group column to indicate the population to which the statistics belong.
 
 ---
 
