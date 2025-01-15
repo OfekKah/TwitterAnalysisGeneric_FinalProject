@@ -38,7 +38,7 @@ pip install -r requirements.txt
 
 **Database Requirements**
 
-The database must include the following:
+The database must include the following tables and columns with the exact names:
 
 - **Posts Table**:
   
