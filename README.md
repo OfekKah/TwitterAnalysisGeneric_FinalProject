@@ -91,6 +91,8 @@ The database must include the following tables and columns with the exact names:
       - All_Populations_top_authors
       - All_Populations_top_countries
       - All_Populations_tweet_distribution
+      - Tweet_Distribution_by_Month_for_All_Populations
+      - Followers_Count_vs_Posts_Count_for_All_Populations
    
    - **Summary Statistics**:
      
