@@ -60,7 +60,7 @@ The database must include the following:
      
       **When analyzing more than one population, the following graphs are created and saved as PNG files:**
      
-      **For each population**:
+      For each population:
       - Population_X_followers_count_range
       - Population_X_friends_count_range
       - Population_X_statuses_count_range
@@ -68,7 +68,7 @@ The database must include the following:
       - Population_X_top_countries
       - Population_X_tweet_distribution
       
-      **Multi-Population Comparative Graphs**:
+      Multi-Population Comparative Graphs:
       - Followers_Count_vs_Posts_Count_for_All_Groups
       - Friends_Count_Range_Merged
       - Posts_Count_Range_Merged
