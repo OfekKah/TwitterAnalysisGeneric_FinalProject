@@ -35,7 +35,9 @@ pip install -r requirements.txt
 ---
 
 ## Usage
+
 **Database Requirements**
+
 The database must include the following:
 
 - **Posts Table**:
