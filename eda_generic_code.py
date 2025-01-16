@@ -450,33 +450,33 @@ def main():
             )
 
 
-        # script_path = "Llama_3_Hugging_Face_Cleaned.py"
+        script_path = "Llama_3_Hugging_Face_Cleaned.py"
 
-        # try:
-        #   # Run the Python script with the db_path as an argument
-        #   result = subprocess.run(
-        #       ["python", script_path, db_path],
-        #       capture_output=True,
-        #       text=True
-        #   )
+        try:
+          # Run the Python script with the db_path as an argument
+          result = subprocess.run(
+              ["python", script_path, db_path],
+              capture_output=True,
+              text=True
+          )
   
-        #   # Check the return code
-        #   if result.returncode != 0:
-        #       raise RuntimeError(
-        #           f"Subprocess failed with return code {result.returncode}.\n"
-        #           f"Error Output:\n{result.stderr}"
-        #       )
-        #   else:
-        #       print("Subprocess completed successfully.")
-        #       print("Output:")
-        #       print(result.stdout)
+          # Check the return code
+          if result.returncode != 0:
+              raise RuntimeError(
+                  f"Subprocess failed with return code {result.returncode}.\n"
+                  f"Error Output:\n{result.stderr}"
+              )
+          else:
+              print("Subprocess completed successfully.")
+              print("Output:")
+              print(result.stdout)
 
-        # except FileNotFoundError:
-        #     print(f"Error: The script {script_path} was not found.")
-        # except RuntimeError as e:
-        #     print(f"Subprocess Error: {e}")
-        # except Exception as e:
-        #     print(f"An unexpected error occurred: {e}")
+        except FileNotFoundError:
+            print(f"Error: The script {script_path} was not found.")
+        except RuntimeError as e:
+            print(f"Subprocess Error: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
         if 'label' in author_columns:
             all_author_data = read_db(conn, authors_table)
