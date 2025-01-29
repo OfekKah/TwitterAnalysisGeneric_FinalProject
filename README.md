@@ -105,7 +105,112 @@ The database must include the following tables and columns with the exact names:
       - `statuses_count`
     
      Additionally, the CSV includes a group column to indicate the population to which the statistics belong.
+2. **Sentiment and Emotion analysis**
 
+
+## Output Directory Structure
+The code creates a directory named `output_analysis` containing the following files and subdirectories:
+
+```
+output_analysis/
+├── emotion_results.tsv
+├── emotion_checkpoint.pkl
+├── sentiment_results.tsv
+├── sentiment_checkpoint.pkl
+├── hate_speech_results.tsv
+├── hate_speech_checkpoint.pkl
+├── emotion_analysis_graphs/
+│   └── trends_plot.png
+├── sentiment_analysis_graphs/
+│   └── trends_plot.png
+└── hate_speech_analysis_graphs/
+    └── trends_plot.png
+```
+
+## Data Files
+
+### Task-Specific Results (TSV Files)
+Each analysis task generates a tab-separated values (TSV) file:
+
+1. `emotion_results.tsv`:
+   - Contains emotion analysis scores for each tweet
+   - Columns include: author, new_date, content, and emotion probabilities (joy, sadness, anger, surprise, etc.)
+
+2. `sentiment_results.tsv`:
+   - Contains sentiment analysis scores for each tweet
+   - Columns include: author, new_date, content, and sentiment probabilities (positive, negative, neutral)
+
+3. `hate_speech_results.tsv`:
+   - Contains hate speech detection scores for each tweet
+   - Columns include: author, new_date, content, and hate speech probabilities
+
+### Checkpoint Files
+Each `.pkl` file stores the processing progress for its respective task:
+- `emotion_checkpoint.pkl`
+- `sentiment_checkpoint.pkl`
+- `hate_speech_checkpoint.pkl`
+
+These files allow the processing to resume from where it left off if interrupted.
+
+## Visualization Outputs
+
+### Trend Plots
+Each analysis task generates a set of trend plots saved in their respective directories:
+
+1. `emotion_analysis_graphs/trends_plot.png`:
+   - Shows the evolution of different emotions over time
+   - Each line represents a different social group (based on author labels)
+   - Y-axis: Probability scores (0-1)
+   - X-axis: Timeline (Year-Month)
+
+2. `sentiment_analysis_graphs/trends_plot.png`:
+   - Displays sentiment trends over time
+   - Separate lines for each social group
+   - Y-axis: Sentiment probability scores
+   - X-axis: Timeline (Year-Month)
+
+3. `hate_speech_analysis_graphs/trends_plot.png`:
+   - Shows hate speech detection trends over time
+   - Separate lines for different social groups
+   - Y-axis: Probability scores
+   - X-axis: Timeline (Year-Month)
+
+## Data Processing Details
+
+### Time Aggregation
+- Data is aggregated monthly
+- Each point in the trend plots represents the mean value for that month
+- The means are calculated in two steps:
+  1. First calculates means per author per month
+  2. Then calculates the mean across all authors in each social group
+
+### Group Analysis
+- Results are separated by social groups defined in the authors table
+- Each group's trends are plotted with different colors for easy comparison
+- Legend identifies which line corresponds to which social group
+
+## Reading the Visualizations
+
+### Interpretation Guidelines
+1. Higher values indicate stronger presence of the analyzed attribute
+2. Trends can be compared across different social groups
+3. Sudden spikes or dips might indicate significant events or temporal patterns
+4. The confidence of predictions can be assessed by the probability scores
+
+### Color Coding
+- Each social group is assigned a unique color in the plots
+- Consistent color scheme maintained across all visualizations for easy comparison
+
+## Note on Data Processing
+- The analysis is performed in batches (default: 1000 tweets per batch)
+- Processing can be limited by setting max_batches (default: 10 batches)
+- Text is cleaned and preprocessed before analysis
+- Dates are standardized to ensure consistent temporal analysis
+
+## Requirements for Viewing Outputs
+- TSV files can be opened with any spreadsheet software (Excel, Google Sheets, etc.)
+- PNG files can be viewed with any image viewer
+- Checkpoint files (.pkl) are binary files used by the program and not meant for direct viewing
 ---
 
 ## Authors
