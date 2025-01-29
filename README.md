@@ -17,9 +17,12 @@ The package is designed to process and analyze data efficiently, offering a robu
       - Performs population-specific analysis if the `label` column exists in the `authors` table.
    - **Location Analysis**:
       - Extracts country information using the Llama model from the `location` column in the `authors` table.
-2. **Sentiment and Emotion Analysis**:
-   - Detects emotions and sentiment polarity (positive/negative/neutral) within tweets or posts.
-   - Supports popular sentiment analysis libraries/models (e.g., Vader, TextBlob, or pre-trained transformers).
+2. **Sentiment, Emotion, and Hate Speech Analysis:**:
+   - Performs analysis using three pre-trained deep learning models for `sentiment`, `emotion`, and `hate speech` detection.
+   - Detects sentiment polarity (positive/negative/neutral) and emotion probabilities (e.g., joy, sadness, anger).
+   - The output of running the model is saved in a dedicated directory.
+   - Inside output directory, three TSV files contain the analysis results for each model: emotion_results.tsv, sentiment_results.tsv, and hate_speech_results.tsv. These files include processed data such as authors, dates, content, and calculated statistics related to each respective analysis type.
+   - The output directory contains three subdirectories: emotion_analysis_graphs, sentiment_analysis_graphs, and hate_speech_analysis_graphs, which store visual graphs generated from the analysis results.
 3. **Topic Modeling**:
    - Extracts the main themes from social network group posts using techniques like Latent Dirichlet Allocation (LDA) or Non-Negative Matrix Factorization (NMF).
 ---
