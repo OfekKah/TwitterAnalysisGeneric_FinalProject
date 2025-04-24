@@ -107,29 +107,28 @@ The database must include the following tables and columns with the exact names:
      Additionally, the CSV includes a group column to indicate the population to which the statistics belong.
 2. **Sentiment and Emotion analysis**
 
+- **Output Directory Structure**:
+   The code creates a directory named `output_analysis` containing the following files and subdirectories:
+   
+   ```
+   output_analysis/
+   ├── emotion_results.tsv
+   ├── emotion_checkpoint.pkl
+   ├── sentiment_results.tsv
+   ├── sentiment_checkpoint.pkl
+   ├── hate_speech_results.tsv
+   ├── hate_speech_checkpoint.pkl
+   ├── emotion_analysis_graphs/
+   │   └── trends_plot.png
+   ├── sentiment_analysis_graphs/
+   │   └── trends_plot.png
+   └── hate_speech_analysis_graphs/
+       └── trends_plot.png
+   ```
 
-## Output Directory Structure
-The code creates a directory named `output_analysis` containing the following files and subdirectories:
 
-```
-output_analysis/
-├── emotion_results.tsv
-├── emotion_checkpoint.pkl
-├── sentiment_results.tsv
-├── sentiment_checkpoint.pkl
-├── hate_speech_results.tsv
-├── hate_speech_checkpoint.pkl
-├── emotion_analysis_graphs/
-│   └── trends_plot.png
-├── sentiment_analysis_graphs/
-│   └── trends_plot.png
-└── hate_speech_analysis_graphs/
-    └── trends_plot.png
-```
-
-## Data Files
-
-### Task-Specific Results (TSV Files)
+- **Data Files**:
+- **Task-Specific Results (TSV Files)**:
 Each analysis task generates a tab-separated values (TSV) file:
 
 1. `emotion_results.tsv`:
@@ -144,7 +143,7 @@ Each analysis task generates a tab-separated values (TSV) file:
    - Contains hate speech detection scores for each tweet
    - Columns include: author, new_date, content, and hate speech probabilities
 
-### Checkpoint Files
+- **Checkpoint Files**:
 Each `.pkl` file stores the processing progress for its respective task:
 - `emotion_checkpoint.pkl`
 - `sentiment_checkpoint.pkl`
