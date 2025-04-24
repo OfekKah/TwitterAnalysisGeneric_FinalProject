@@ -47,12 +47,12 @@ The database must include the following tables and columns with the exact names:
   
    Columns:
      - `author`
-     - `author_screen_name`
      - `date`
   
 - **Authors Table**:
   
    Columns:
+     - `author_screen_name`
      - `friends_count`
      - `followers_count`
      - `statuses_count`
