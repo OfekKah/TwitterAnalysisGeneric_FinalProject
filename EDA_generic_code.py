@@ -4,22 +4,102 @@ import seaborn as sns
 from datetime import datetime
 import sqlite3
 import os
-import subprocess
-import sys
+import pickle
 
-def read_db(conn, table):
-    """Retrieve all rows from a database table."""
-    query = f"SELECT * FROM {table}"
-    return pd.read_sql(query, conn)
+
+REQUIRED_POSTS_COLUMNS = {
+    "author",
+    "date",
+    "content"
+}
+OPTIONAL_POSTS_COLUMNS = {"label"}
+
+REQUIRED_AUTHORS_COLUMNS = {
+    "author_screen_name",
+    "friends_count",
+    "followers_count",
+    "statuses_count",
+    "location"
+}
+
+def validate_db_file(path):
+    """Ensure the file is a SQLite .db file."""
+    if not os.path.isfile(path):
+        raise FileNotFoundError(f"File not found: {path}")
+    if not path.lower().endswith(".db"):
+        raise ValueError(f"Invalid file type: {path}. Must be a .db file.")
+
+def validate_columns(df, required_cols, optional_cols=None, table_name=""):
+    """Ensure the required columns exist in the DataFrame."""
+    missing = required_cols - set(df.columns)
+    if missing:
+        raise ValueError(f"Missing required columns in {table_name} table: {missing}")
+    if optional_cols:
+        optional_missing = optional_cols - set(df.columns)
+        if optional_missing:
+            print(f"Note: Optional columns missing in {table_name} table: {optional_missing}")
+
+def read_authors(conn):
+    """Retrieve and validate all rows from the authors table."""
+    query = "SELECT * FROM authors"
+    df = pd.read_sql(query, conn)
+    validate_columns(df, REQUIRED_AUTHORS_COLUMNS, optional_cols=OPTIONAL_POSTS_COLUMNS, table_name="authors")
+    return df
+
+def read_posts(conn, chunksize=1000, checkpoint_file="EDA_posts_checkpoint.pkl"):
+    """
+    Retrieve and validate rows from the posts table in chunks.
+    Supports checkpointing to resume from the last index if interrupted.
+    Efficient for large datasets using SQL streaming.
+    """
+    query = "SELECT * FROM posts"
+
+    # Load checkpoint if exists
+    start_index = 0
+    if os.path.exists(checkpoint_file):
+        with open(checkpoint_file, 'rb') as f:
+            start_index = pickle.load(f)
+        print(f"Resuming from index: {start_index}")
+    else:
+        print("Starting from the beginning...")
+
+    global_index = 0
+    posts_iter = pd.read_sql(query, conn, chunksize=chunksize)
+
+    for chunk in posts_iter:
+        chunk_length = len(chunk)
+
+        # Skip chunks until we reach the saved checkpoint
+        if global_index + chunk_length <= start_index:
+            global_index += chunk_length
+            continue
+
+        # Cut the chunk if partially processed
+        if start_index > global_index:
+            offset = start_index - global_index
+            chunk = chunk.iloc[offset:]
+            global_index += offset
+        else:
+            offset = 0
+
+        global_index += len(chunk)
+
+        validate_columns(chunk, REQUIRED_POSTS_COLUMNS, table_name="posts")
+
+        # Save checkpoint after yielding
+        with open(checkpoint_file, 'wb') as f:
+            pickle.dump(global_index, f)
+
+        yield chunk
 
 def describe_column(df, column):
     """Provide statistical description of a specified column."""
     return df[column].describe()
 
+
 def categorize_counts(df, column, bins, labels):
     """Categorize a column into ranges and return value counts."""
-    df = df.copy()  # Ensure we're working on a copy
-    df.loc[:, column] = pd.to_numeric(df[column], errors='coerce')  
+    df[column] = pd.to_numeric(df[column], errors='coerce')
     df = df.dropna(subset=[column])
     return pd.cut(df[column], bins=bins, labels=labels).value_counts().sort_index()
 
@@ -37,17 +117,17 @@ def plot_bar_chart(data, title, xlabel, ylabel, filename):
     plt.savefig(filename)
     plt.close()
 
-def process_tweets(df, column='date'):
-    """Preprocess tweets to extract date and month."""
-    df = df.copy()  # Create a copy to avoid warnings
-    df.loc[:, 'date_new'] = pd.to_datetime(df[column].apply(lambda d: d.split()[0]), errors='coerce')
-    df.loc[:, 'month'] = df['date_new'].dt.to_period('M')
-    return df
+# def process_tweets(df, column='date'):
+#     """Preprocess tweets to extract date and month."""
+#     df = df.copy()  # Create a copy to avoid warnings
+#     df.loc[:, 'date_new'] = pd.to_datetime(df[column].apply(lambda d: d.split()[0]), errors='coerce')
+#     df.loc[:, 'month'] = df['date_new'].dt.to_period('M')
+#     return df
 
 def plot_tweet_distribution(df, title, filename, output_folder):
     if os.path.commonpath([output_folder, filename]) == output_folder:
         filename = os.path.relpath(filename, output_folder)
-
+    
     tweets_per_month = df['month'].value_counts().sort_index()
     plt.figure(figsize=(20, 8))
     sns.barplot(x=tweets_per_month.index.astype(str), y=tweets_per_month.values, palette="viridis")
@@ -73,8 +153,8 @@ def analyze_group(data, group_name, output_folder, bins, labels, summary_file):
         if column in data.columns:
             print(f"Missing values in {column}: {data[column].isnull().sum()}")
             description = describe_column(data, column).to_frame().T
-            description['group'] = group_name
-            description['column'] = column
+            description['group'] = group_name  
+            description['column'] = column  
             all_descriptions.append(description)
         else:
             print(f"Column {column} does not exist in the data.")
@@ -82,9 +162,9 @@ def analyze_group(data, group_name, output_folder, bins, labels, summary_file):
     if all_descriptions:
         combined_descriptions = pd.concat(all_descriptions, ignore_index=True)
         combined_descriptions = combined_descriptions.iloc[:,::-1]
-        if not os.path.exists(summary_file):
+        if not os.path.exists(summary_file):  
             combined_descriptions.to_csv(summary_file, index=False)
-        else:
+        else:  
             combined_descriptions.to_csv(summary_file, mode='a', index=False, header=False)
         print(f"Appended statistics for {group_name} to {summary_file}")
 
@@ -108,8 +188,7 @@ def plot_friends_count_range(groups_data, group_names, output_folder, filename):
     profession_counts = {}
     for df, group_name in zip(groups_data, group_names):
         # Convert 'friends_count' to numeric, coercing errors to NaN
-        df = df.copy()  # Ensure we're working on a copy
-        df.loc[:, 'friends_count'] = pd.to_numeric(df['friends_count'], errors='coerce')  
+        df['friends_count'] = pd.to_numeric(df['friends_count'], errors='coerce')
         # Drop rows with NaN values in 'friends_count'
         df = df.dropna(subset=['friends_count'])
         # Categorize friends count using consistent binning
@@ -117,17 +196,17 @@ def plot_friends_count_range(groups_data, group_names, output_folder, filename):
         # Count the number in each range
         df_range_counts = df['friends_count_range'].value_counts().sort_index()
         profession_counts[group_name] = df_range_counts
-
+        
     # Combine the counts into a DataFrame
     combined_counts = pd.DataFrame(profession_counts)
-
+    
     # Plot the combined data
     combined_counts.plot(kind='bar', figsize=(10, 6), color=['skyblue', 'orange'])
     plt.title('Number of Friends Count Range for each populations')
     plt.xlabel('Friends Count Range')
     plt.ylabel('Number of Individuals')
     plt.xticks(rotation=0)
-    plt.legend(title='Group')
+    plt.legend(title='Profession')
     save_path = os.path.join(output_folder, filename)
     plt.savefig(save_path)
     plt.close()
@@ -140,8 +219,7 @@ def plot_followers_count_range(groups_data, group_names, output_folder, filename
     profession_counts = {}
     for df, group_name in zip(groups_data, group_names):
         # Convert 'followers_count' to numeric, coercing errors to NaN
-        df = df.copy()  # Ensure we're working on a copy
-        df.loc[:, 'followers_count'] = pd.to_numeric(df['followers_count'], errors='coerce')  
+        df['followers_count'] = pd.to_numeric(df['followers_count'], errors='coerce')
         # Drop rows with NaN values in 'followers_count'
         df = df.dropna(subset=['followers_count'])
         # Categorize friends count using consistent binning
@@ -149,17 +227,17 @@ def plot_followers_count_range(groups_data, group_names, output_folder, filename
         # Count the number in each range
         df_range_counts = df['followers_count_range'].value_counts().sort_index()
         profession_counts[group_name] = df_range_counts
-
+        
     # Combine the counts into a DataFrame
     combined_counts = pd.DataFrame(profession_counts)
-
+    
     # Plot the combined data
     combined_counts.plot(kind='bar', figsize=(10, 6), color=['skyblue', 'orange'])
     plt.title('Number of followers Count Range for each populations')
     plt.xlabel('followers Count Range')
     plt.ylabel('Number of Individuals')
     plt.xticks(rotation=0)
-    plt.legend(title='Group')
+    plt.legend(title='Profession')
     save_path = os.path.join(output_folder, filename)
     plt.savefig(save_path)
     plt.close()
@@ -172,8 +250,7 @@ def plot_posts_count_range(groups_data, group_names, output_folder, filename):
     profession_counts = {}
     for df, group_name in zip(groups_data, group_names):
         # Convert 'posts_count' to numeric, coercing errors to NaN
-        df = df.copy()  # Ensure we're working on a copy
-        df.loc[:, 'statuses_count'] = pd.to_numeric(df['statuses_count'], errors='coerce')  
+        df['statuses_count'] = pd.to_numeric(df['statuses_count'], errors='coerce')
         # Drop rows with NaN values in 'posts_count'
         df = df.dropna(subset=['statuses_count'])
         # Categorize posts count using consistent binning
@@ -181,17 +258,17 @@ def plot_posts_count_range(groups_data, group_names, output_folder, filename):
         # Count the number in each range
         df_range_counts = df['posts_count_range'].value_counts().sort_index()
         profession_counts[group_name] = df_range_counts
-
+        
     # Combine the counts into a DataFrame
     combined_counts = pd.DataFrame(profession_counts)
-
+    
     # Plot the combined data
     combined_counts.plot(kind='bar', figsize=(10, 6), color=['skyblue', 'orange'])
     plt.title('Number of posts Count Range for each populations')
     plt.xlabel('posts Count Range')
     plt.ylabel('Number of Individuals')
     plt.xticks(rotation=0)
-    plt.legend(title='Group')
+    plt.legend(title='Profession')
     save_path = os.path.join(output_folder, filename)
     plt.savefig(save_path)
     plt.close()
@@ -216,7 +293,7 @@ def plot_top_locations_by_count(df, group_name, output_folder):
     # Count the occurrences of each country and get the top 10
     # df = df[df['country'] != 'NaN']
     country_counts = df['country'].value_counts().head(10)
-
+    
     # Create the plot
     plt.figure(figsize=(10, 6))
     sns.barplot(x=country_counts.index, y=country_counts.values, palette='viridis')
@@ -225,7 +302,7 @@ def plot_top_locations_by_count(df, group_name, output_folder):
     plt.ylabel("Count")
     plt.xticks(rotation=45)
     plt.tight_layout()
-
+    
     # Save the plot
     plt.savefig(os.path.join(output_folder, f"{group_name}_top_countries.png"))
     plt.close()
@@ -252,10 +329,10 @@ def plot_scatter_with_limits_multiple_groups(data_groups, labels, x_column, y_co
     plt.xlabel(xlabel, fontsize=12)
     plt.ylabel(ylabel, fontsize=12)
     if len(labels) > 1:
-        plt.legend(title='Group', loc='upper left')
+        plt.legend()
     plt.grid(True)
-    file_path = os.path.join(output_folder, f"{title.replace(' ', '_')}.png")
-    plt.savefig(file_path)
+    file_path = os.path.join(output_folder, f"{title.replace(' ', '_')}.png") 
+    plt.savefig(file_path)  
     plt.close()
 
 def analyze_groups_with_scatter(data_groups, group_names):
@@ -264,7 +341,7 @@ def analyze_groups_with_scatter(data_groups, group_names):
     """
     for df, group_name in zip(data_groups, group_names):
         analyze_group(df, group_name)
-
+    
     plot_scatter_with_limits_multiple_groups(
         data_groups=data_groups,
         labels=group_names,
@@ -306,20 +383,24 @@ def save_statistics_to_csv(data, group_name, summary_file):
     for column in ['friends_count', 'followers_count', 'statuses_count']:
         if column in data.columns:
             description = describe_column(data, column).to_frame().T
-            description['group'] = group_name
-            description['column'] = column
+            description['group'] = group_name  
+            description['column'] = column  
             statistics.append(description)
 
     if statistics:
         combined_statistics = pd.concat(statistics, ignore_index=True)
         combined_statistics = combined_statistics.iloc[:,::-1]
-        if not os.path.exists(summary_file):
+        if not os.path.exists(summary_file):  
             combined_statistics.to_csv(summary_file, index=False)
-        else:
+        else:  
             combined_statistics.to_csv(summary_file, mode='a', index=False, header=False)
 
 
-def main():
+import subprocess
+import warnings
+
+def main(db_path):
+    warnings.simplefilter(action='ignore', category=pd.errors.SettingWithCopyWarning)
     output_folder = 'output'
     os.makedirs(output_folder, exist_ok=True)
 
@@ -327,24 +408,29 @@ def main():
     BINS = [0, 100, 500, 1000, 5000, 10000, 20000]
     LABELS = ['0-100', '101-500', '501-1000', '1001-5000', '5001-10000', '10001-20000']
 
-    if len(sys.argv) < 2:
-        print("Error: Please provide the path to the database file as a command-line argument.")
-        return
-    
-    db_path = sys.argv[1]
-    
-    if not os.path.exists(db_path):
-        print(f"Error: The database file '{db_path}' does not exist.")
-        return
+    validate_db_file(db_path)
     conn = sqlite3.connect(db_path)
 
+    
     authors_table = 'authors'
     posts_table = 'posts'
 
     try:
+        # Load the authors table fully and the posts table in chunks
+        all_author_data = read_authors(conn)
+        posts_iter = read_posts(conn, chunksize=1000)
+        # Combine all posts chunks into one DataFrame
+        # posts_data = pd.concat(list(posts_iter), ignore_index=True)
+        processed_chunks = []
+        for i, chunk in enumerate(posts_iter):
+            print(f"Processing chunk {i+1}...")
+            processed_chunks.append(chunk)
+        
+        # איחוד רק לאחר שכל הצ'אנקים עברו עיבוד
+        posts_data = pd.concat(processed_chunks, ignore_index=True)
+        
         author_columns = pd.read_sql(f"PRAGMA table_info({authors_table})", conn)['name'].tolist()
         if 'label' in author_columns:
-            all_author_data = read_db(conn, authors_table)
             unique_labels = all_author_data['label'].unique()
 
             group_data = []
@@ -357,7 +443,7 @@ def main():
                     continue
 
                 group = all_author_data.query(f"label == '{label}'")
-
+                
                 # Skip empty groups
                 if group.empty:
                     print(f"Skipping empty group for label: {label}")
@@ -367,9 +453,7 @@ def main():
                 group_names.append(label)
 
             analyze_groups(group_data, group_names, output_folder, BINS, LABELS, summary_file)
-
-            posts_data = read_db(conn, posts_table)
-
+            
 
             # Process and visualize each group's tweet distribution
             for group, name in zip(group_data, group_names):
@@ -382,13 +466,13 @@ def main():
 
                 distribution_path = os.path.join(output_folder, f"{name}_tweet_distribution.png")
                 plot_tweet_distribution(
-                    group_posts,
-                    f"{name} Tweet Distribution",
-                    f"{name}_tweet_distribution.png",
+                    group_posts, 
+                    f"{name} Tweet Distribution", 
+                    f"{name}_tweet_distribution.png", 
                     output_folder
                 )
                 plot_top_authors_by_tweet_count(group_posts, name, output_folder)
-
+                
 
             plot_friends_count_range(group_data, group_names, output_folder, f"Friends_Count_Range_Merged.png")
             plot_followers_count_range(group_data, group_names, output_folder, f"Followers_Count_Range_Merged.png")
@@ -416,20 +500,26 @@ def main():
                 output_folder=output_folder
             )
         else:
-            all_data = read_db(conn, authors_table)
-
+            all_data = read_authors(conn)
+            
             analyze_group(all_data, "All_Populations", output_folder, BINS, LABELS, summary_file)
 
             # Plot tweet distribution
-            posts_data = read_db(conn, posts_table)
+            posts_iter = read_posts(conn, chunksize=1000)
+            # Combine all posts chunks into one DataFrame
+            posts_data = pd.concat(list(posts_iter), ignore_index=True)
             posts_data['date_new'] = pd.to_datetime(posts_data['date'].apply(lambda d: d.split()[0]), errors='coerce')
             posts_data['month'] = posts_data['date_new'].dt.to_period('M')
             plot_tweet_distribution(posts_data, "All Populations Tweet Distribution", "All_Populations_tweet_distribution.png", output_folder)
             plot_top_authors_by_tweet_count(posts_data, "All_Populations", output_folder)
 
+            posts_iter = read_posts(conn, chunksize=1000)
+            # Combine all posts chunks into one DataFrame
+            all_posts_data = pd.concat(list(posts_iter), ignore_index=True)
+
             # Combined distribution plot
             plot_tweets_distribution_per_month_merged(
-                [posts_data],
+                [all_posts_data],
                 ["All_Populations"],
                 "Tweet Distribution by Month for All Populations",
                 output_folder
@@ -448,38 +538,21 @@ def main():
                 ylabel='Post Count',
                 output_folder=output_folder
             )
-
-
+            
+        
+        # # Define the path to your Python script
         # script_path = "Llama_3_Hugging_Face_Cleaned.py"
+        
+        # Run the Python script with the db_path as an argument
+        # subprocess.run(["python", script_path, db_path], capture_output=True, text=True)
+        # result = subprocess.run(["python", script_path, db_path], capture_output=True, text=True)
 
-        # try:
-        #   # Run the Python script with the db_path as an argument
-        #   result = subprocess.run(
-        #       ["python", script_path, db_path],
-        #       capture_output=True,
-        #       text=True
-        #   )
-  
-        #   # Check the return code
-        #   if result.returncode != 0:
-        #       raise RuntimeError(
-        #           f"Subprocess failed with return code {result.returncode}.\n"
-        #           f"Error Output:\n{result.stderr}"
-        #       )
-        #   else:
-        #       print("Subprocess completed successfully.")
-        #       print("Output:")
-        #       print(result.stdout)
-
-        # except FileNotFoundError:
-        #     print(f"Error: The script {script_path} was not found.")
-        # except RuntimeError as e:
-        #     print(f"Subprocess Error: {e}")
-        # except Exception as e:
-        #     print(f"An unexpected error occurred: {e}")
+        # # Print or log the captured output
+        # print("Subprocess Output:", result.stdout)
+        # print("Subprocess Error Output:", result.stderr)
 
         if 'label' in author_columns:
-            all_author_data = read_db(conn, authors_table)
+            all_author_data = read_authors(conn)
             unique_labels = all_author_data['label'].unique()
             group_data = []
             group_names = []
@@ -498,15 +571,21 @@ def main():
 
             # Process and visualize each group's tweet distribution
             for group, name in zip(group_data, group_names):
-                plot_top_locations_by_count(group, name, output_folder)
+                if 'country' in group.columns:
+                    plot_top_locations_by_count(group, name, output_folder)
+                else:
+                    print(f"Skipping location plot for group '{name}' – 'country' column not found.")
+
         else:
-            plot_top_locations_by_count(all_data, "All_Populations", output_folder)
+            if 'country' in all_data.columns:
+                plot_top_locations_by_count(all_data, "All_Populations", output_folder)
+            else:
+                print("Skipping location plot for All_Populations – 'country' column not found.")
+
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    main()
-
-
-
+    db_path = '53k_individual_hcps_70_percent_confidence_tweets_2019_2022.db'
+    main(db_path)
