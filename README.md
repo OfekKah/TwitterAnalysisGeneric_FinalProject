@@ -48,7 +48,7 @@ The database must include the following tables and columns with the exact names:
    Columns:
      - `author`
      - `date`
-  
+     - `content`
 - **Authors Table**:
   
    Columns:
@@ -57,7 +57,6 @@ The database must include the following tables and columns with the exact names:
      - `followers_count`
      - `statuses_count`
      - `location`
-     - `content`
   
    Optional: `label` column for group-based analysis.
 
