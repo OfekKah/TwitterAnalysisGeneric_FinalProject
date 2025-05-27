@@ -1,0 +1,19 @@
+# Configuration for Top2Vec pipeline
+
+param_grid:
+  embedding_model:
+    - "all-MiniLM-L6-v2"
+    - "all-mpnet-base-v2"
+  speed:
+    - "learn"
+
+contextual_top2vec: true
+# Max number of tweets to process from DB
+max_docs: 10000
+
+
+# Output directory where results will be saved (plots, model, CSVs, etc.)
+output_dir: "./top2vec_output_3"
+
+# Log file path for recording progress and errors
+log_file: "top2vec_run.log"

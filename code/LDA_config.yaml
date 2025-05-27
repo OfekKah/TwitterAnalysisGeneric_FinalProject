@@ -1,0 +1,60 @@
+database_path: "tweets_db.db"
+limit: 10000
+
+min_topics: 10
+max_topics: 60
+step: 5
+
+no_below: 3
+no_above: 0.3
+alpha: 0.01
+eta: 0.01
+
+optimal_num_topics: null  # set to a number to skip evaluation
+
+iterations: 200  # number of iterations during LDA training
+
+custom_stopwords:
+  - rt
+  - amp
+  - twitter
+  - tweet
+  - tweets
+  - like
+  - just
+  - still
+  - got
+  - one
+  - get
+  - time
+  - year
+  - day
+  - today
+  - look
+  - think
+  - feel
+  - really
+  - very
+  - bad
+  - good
+  - well
+  - news
+  - ive
+  - hes
+  - shes
+  - ill
+  - dont
+  - didnt
+  - would
+  - could
+  - might
+  - actually
+  - lmao
+  - haha
+  - omg
+  - sht
+  - holy
+  - pete
+  - deep
+  - across
+  - url

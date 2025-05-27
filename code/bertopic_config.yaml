@@ -1,0 +1,5 @@
+nr_topics: auto
+min_topic_size: 75
+calculate_probabilities: false
+verbose: true
+db_path: tweets_db.db
