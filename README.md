@@ -219,7 +219,7 @@ The database must include the following tables and columns with the exact names:
          - Checkpoint files (.pkl) are binary files used by the program and not meant for direct viewing
       ---
 3. **Topic modeling**:
-   ### 3.1 BERTopic
+   #### 3.1 BERTopic
 
    - **Output Directory Structure**:
       The code creates a directory named `bertopic_output` containing the following files and subdirectories:
@@ -268,12 +268,55 @@ The database must include the following tables and columns with the exact names:
   - Embeddings are computed and clustered using UMAP and HDBSCAN.
   - Topics can be further refined by removing outliers and updating terms.
 
----
 
 ### 3.2 LDA (Latent Dirichlet Allocation)
 
 - **Output Directory Structure**:  
   The code creates a directory named `lda_output` containing the following files and subdirectories:
+      ```
+      lda_output/
+      ├── lda_model/
+      ├── lda_dictionary.csv
+      ├── lda_topic_terms.csv
+      ├── lda_dominant_topics.csv
+      ├── lda_topic_info.csv
+      ├── tweet_topic_label_mapping.csv
+      ├── tweet_merged_topic_mapping.csv
+      ├── pyldavis_intertopic_map.html
+      ├── topic_wordclouds.png
+      ├── topic_evaluation.png
+      ├── stacked_area_topics_over_time_M.png
+      ├── dominant_topic_distribution.png
+      ├── topic_distribution_by_label.png
+      ├── sunburst_chart.png
+      └── sunburst_chart_merged.png
+      ```
+
+- **Data Files**:
+  - `lda_model/`: Folder with the serialized LDA model.
+  - `lda_dictionary.csv`: Dictionary of tokenized words with frequencies.
+  - `lda_topic_terms.csv`: Top keywords per topic.
+  - `lda_dominant_topics.csv`: Most likely topic for each tweet.
+  - `lda_topic_info.csv`: Overview of topics with scores.
+  - `tweet_topic_label_mapping.csv`: Mapping between tweets, topics, and labels.
+  - `tweet_merged_topic_mapping.csv`: Topic mapping after grouping.
+
+- **Visualization Outputs**:
+  - `pyldavis_intertopic_map.html`: Interactive topic map using pyLDAvis.
+  - `topic_wordclouds.png`: Word clouds for all topics.
+  - `topic_evaluation.png`: Graph of coherence vs. topic number.
+  - `stacked_area_topics_over_time_M.png`: Monthly topic trend (stacked).
+  - `dominant_topic_distribution.png`: Distribution of dominant topics.
+  - `topic_distribution_by_label.png`: Normalized topic distribution by label.
+  - `sunburst_chart.png`: Group-based donut visualization of topic participation.
+  - `sunburst_chart_merged.png`: Same as above after topic merging.
+
+- **Data Processing Notes**:
+  - Full preprocessing pipeline includes lemmatization and stopword removal.
+  - Optimal topic count is selected based on coherence.
+  - Group-level visualizations support comparative analysis.
+
+---
 
 
 
