@@ -25,16 +25,16 @@ The package is designed to process and analyze data efficiently, offering a robu
    - The output directory contains three subdirectories: emotion_analysis_graphs, sentiment_analysis_graphs, and hate_speech_analysis_graphs, which store visual graphs generated from the analysis results.
 3. **Topic Modeling**:
    - Extracts the main themes from social network group posts using techniques like Latent Dirichlet Allocation (LDA) or Non-Negative Matrix \
-**BERTopic:**
-- Generates interpretable topic clusters using transformer embeddings, UMAP, and HDBSCAN.
-- Includes tweet preprocessing, outlier removal, automatic chunking, and topic merging using GPT.
-- Outputs include: `tweet_topic_mapping.csv`, `tweet_merged_topic_mapping.csv`, `topic_terms.csv`, `evaluation_scores.txt`, and saved model.
-- Visualizations: word clouds, topic hierarchy, inter-topic distance map, topic timelines, stacked area trends, distribution charts, sunburst plots.
+---
 
-**LDA (Latent Dirichlet Allocation):**
-- Performs classical topic modeling with lemmatization and coherence optimization.
-- Outputs include: serialized LDA model, `lda_dictionary.csv`, `lda_topic_terms.csv`, `lda_dominant_topics.csv`, `topic_wordclouds.png`, `pyldavis_intertopic_map.html`.
-- Advanced visualizations: topic evolution trends, group-based distribution plots, merged topic group analysis.
+#### BERTopic
+
+- Generates interpretable topic clusters using transformer embeddings, UMAP, and HDBSCAN.
+- Supports:
+  - Preprocessing and cleaning of tweet texts
+  - Outlier removal
+  - Chunked training for large datasets
+
 
 ---
 
