@@ -219,6 +219,61 @@ The database must include the following tables and columns with the exact names:
          - Checkpoint files (.pkl) are binary files used by the program and not meant for direct viewing
       ---
 3. **Topic modeling**:
+   ### 3.1 BERTopic
+
+   - **Output Directory Structure**:
+      The code creates a directory named `bertopic_output` containing the following files and subdirectories:
+     bertopic_output/
+   ├── tweet_topic_mapping.csv
+   ├── tweet_merged_topic_mapping.csv
+   ├── tweet_topics_info.csv
+   ├── tweet_topic_terms.csv
+   ├── evaluation_scores.txt
+   ├── tweet_bertopic_model/
+   ├── topic_distribution.png
+   ├── wordclouds_top5_topics.png
+   ├── topic_similarity.html
+   ├── topic_hierarchy.png
+   ├── topics_over_time.html
+   ├── stacked_area_topics_over_time_M.png
+   ├── topics_label_distribution.png
+   ├── sunburst_chart.png
+   └── merged_topics_label_distribution.png
+
+
+- **Data Files**:
+  - `tweet_topic_mapping.csv`: Contains the original tweet-to-topic assignment.
+  - `tweet_merged_topic_mapping.csv`: Same as above after merging semantically similar topics.
+  - `tweet_topics_info.csv`: Metadata per topic (e.g., topic ID, count, name).
+  - `tweet_topic_terms.csv`: Top keywords and weights per topic.
+  - `evaluation_scores.txt`: Coherence and diversity evaluation metrics.
+  - `tweet_bertopic_model/`: Saved BERTopic model.
+
+- **Visualization Outputs**:
+  - `topic_distribution.png`: Histogram showing the number of tweets per topic.
+  - `wordclouds_top5_topics.png`: Word clouds of the top five topics.
+  - `topic_similarity.html`: Intertopic distance visualization.
+  - `topic_hierarchy.png`: Hierarchical cluster visualization.
+  - `topics_over_time.html`: Interactive timeline of topic evolution.
+  - `stacked_area_topics_over_time_M.png`: Stacked monthly topic trends.
+  - `topics_label_distribution.png`: Normalized topic distribution per group.
+  - `sunburst_chart.png`: Group participation per topic (donut style).
+  - `merged_topics_label_distribution.png`: Distribution after merging.
+
+- **Data Processing Notes**:
+  - Tweets are cleaned and tokenized.
+  - Embeddings are computed and clustered using UMAP and HDBSCAN.
+  - Topics can be further refined by removing outliers and updating terms.
+
+---
+
+### 3.2 LDA (Latent Dirichlet Allocation)
+
+- **Output Directory Structure**:  
+  The code creates a directory named `lda_output` containing the following files and subdirectories:
+
+
+
 ## Authors
 - Shay Herling 
 - Ofek Kachlon
