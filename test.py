@@ -519,7 +519,6 @@ def test_load_tweets_in_batches_returns_clean_tweets(tmp_path):
             date TEXT
         )
     """)
-    # ציוצים שעוברים גם אחרי ניקוי
     conn.executemany(
         "INSERT INTO posts (content, date) VALUES (?, ?)",
         [
@@ -541,7 +540,6 @@ def test_save_topic_mapping_creates_csv(tmp_path):
     import pandas as pd
     from bertopic import BERTopic
 
-    # הכנת מודל דמה
     model = BERTopic(verbose=False)
     dummy_tweets = ["Natural language processing is cool", "AI is transforming industries"]
     model.fit(dummy_tweets)
@@ -549,7 +547,6 @@ def test_save_topic_mapping_creates_csv(tmp_path):
     output_csv = tmp_path / "mapping.csv"
     BerTopic_notebook.save_topic_mapping(model, dummy_tweets, output_path=str(output_csv))
 
-    # בדיקה שהקובץ נוצר עם עמודות תקינות
     assert output_csv.exists()
     df = pd.read_csv(output_csv)
     assert "Document" in df.columns
