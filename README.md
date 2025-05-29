@@ -274,7 +274,7 @@ The database must include the following tables and columns with the exact names:
 - **Output Directory Structure**:  
   The code creates a directory named `lda_output` containing the following files and subdirectories:
   
-      ```
+
       lda_output/
       ├── lda_model/
       ├── lda_dictionary.csv
@@ -291,7 +291,8 @@ The database must include the following tables and columns with the exact names:
       ├── topic_distribution_by_label.png
       ├── sunburst_chart.png
       └── sunburst_chart_merged.png
-      ```
+
+  
 - **Data Files**:
   - `lda_model/`: Folder with the serialized LDA model.
   - `lda_dictionary.csv`: Dictionary of tokenized words with frequencies.
