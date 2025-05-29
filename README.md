@@ -24,63 +24,17 @@ The package is designed to process and analyze data efficiently, offering a robu
    - Inside output directory, three TSV files contain the analysis results for each model: emotion_results.tsv, sentiment_results.tsv, and hate_speech_results.tsv. These files include processed data such as authors, dates, content, and calculated statistics related to each respective analysis type.
    - The output directory contains three subdirectories: emotion_analysis_graphs, sentiment_analysis_graphs, and hate_speech_analysis_graphs, which store visual graphs generated from the analysis results.
 3. **Topic Modeling**:
-   - Extracts the main themes from social network group posts using techniques like Latent Dirichlet Allocation (LDA) or Non-Negative Matrix Factorization (NMF).
-- **Topic Info**:
-  - `tweet_topics_info.csv` – Metadata for each topic (size, name, etc.)
-  - `tweet_topic_terms.csv` – Top 10 words per topic with weights
-  - `evaluation_scores.txt` – Coherence and diversity metrics
-  - `tweet_bertopic_model/` – Saved BERTopic model
+   - Extracts the main themes from social network group posts using techniques like Latent Dirichlet Allocation (LDA) or Non-Negative Matrix \
+**BERTopic:**
+- Generates interpretable topic clusters using transformer embeddings, UMAP, and HDBSCAN.
+- Includes tweet preprocessing, outlier removal, automatic chunking, and topic merging using GPT.
+- Outputs include: `tweet_topic_mapping.csv`, `tweet_merged_topic_mapping.csv`, `topic_terms.csv`, `evaluation_scores.txt`, and saved model.
+- Visualizations: word clouds, topic hierarchy, inter-topic distance map, topic timelines, stacked area trends, distribution charts, sunburst plots.
 
-- **Topic Assignment**:
-  - `tweet_topic_mapping.csv` – Each tweet’s assigned topic (by original name)
-  - `tweet_merged_topic_mapping.csv` – Same mapping with merged topic group names
-
-- **Visualizations**:
-  - `wordclouds_top5_topics.png` – Word clouds for top 5 topics
-  - `topic_distribution.png` – Histogram of topic sizes
-  - `topic_similarity.html` – Interactive inter-topic distance map
-  - `topic_hierarchy.png` – Hierarchical dendrogram of topics
-  - `topics_over_time.html` – Topic timelines over 20 time bins
-  - `stacked_area_topics_over_time_M.png` – Stacked area chart of topic trends (monthly)
-  - `topics_label_distribution.png` – Topic distributions across user labels (normalized)
-  - `sunburst_chart.png` – Donut visualization of group participation in top distinct topics
-  - `merged_topics_label_distribution.png` – Same distribution after merging topic names
-  - `sunburst_chart_merged.png` – Donut chart for merged topic groups
-
-- **Modeling Log**:
-  - `topic_modeling_log.csv` – Logs model parameters, top topics, and evaluation scores
-
----
-
-#### **LDA (Latent Dirichlet Allocation)**
-- Performs detailed topic modeling workflow with pre-processing (tokenization, stopword removal, lemmatization).
-- Automatically evaluates topic coherence and selects the optimal number of topics.
-- Includes group-based comparison and merging of topics with similar names using GPT-assisted heuristics.
-
-##### Outputs (saved under `lda_output/`):
-- **Model Files**:
-  - `lda_model` – Serialized gensim model
-  - `lda_dictionary.csv` – Token frequency and ID mapping
-
-- **Topic-Term Info**:
-  - `lda_topic_terms.csv` – Top keywords per topic
-  - `lda_topic_info.csv` – Topic summary and metrics
-
-- **Tweet-Topic Mapping**:
-  - `lda_dominant_topics.csv` – Dominant topic assigned to each tweet
-  - `tweet_topic_label_mapping.csv` – Original topic per tweet
-  - `tweet_merged_topic_mapping.csv` – Merged topic group names per tweet
-
-- **Visualizations**:
-  - `pyldavis_intertopic_map.html` – Interactive map of topic similarities
-  - `topic_wordclouds.png` – Word clouds per topic
-  - `stacked_area_topics_over_time_M.png` – Evolution of topic prominence over time
-  - `dominant_topic_distribution.png` – Histogram of topic sizes
-  - `topic_distribution_by_label.png`, `sunburst_chart.png` – Distribution of topics by group label
-  - `*_after_merge.png` – Updated charts after topic merging
-
-- **Modeling Log**:
-  - `lda_modeling_log.csv` – Records parameters, coherence scores, and topic summary
+**LDA (Latent Dirichlet Allocation):**
+- Performs classical topic modeling with lemmatization and coherence optimization.
+- Outputs include: serialized LDA model, `lda_dictionary.csv`, `lda_topic_terms.csv`, `lda_dominant_topics.csv`, `topic_wordclouds.png`, `pyldavis_intertopic_map.html`.
+- Advanced visualizations: topic evolution trends, group-based distribution plots, merged topic group analysis.
 
 ---
 
