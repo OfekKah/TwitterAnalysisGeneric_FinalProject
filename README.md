@@ -218,7 +218,7 @@ The database must include the following tables and columns with the exact names:
          - PNG files can be viewed with any image viewer
          - Checkpoint files (.pkl) are binary files used by the program and not meant for direct viewing
       ---
-
+3. **Topic modeling**:
 ## Authors
 - Shay Herling 
 - Ofek Kachlon
