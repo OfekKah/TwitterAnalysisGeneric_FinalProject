@@ -269,10 +269,11 @@ The database must include the following tables and columns with the exact names:
   - Topics can be further refined by removing outliers and updating terms.
 
 
-### 3.2 LDA (Latent Dirichlet Allocation)
+#### 3.2 LDA (Latent Dirichlet Allocation)
 
 - **Output Directory Structure**:  
   The code creates a directory named `lda_output` containing the following files and subdirectories:
+  
       ```
       lda_output/
       ├── lda_model/
@@ -291,7 +292,6 @@ The database must include the following tables and columns with the exact names:
       ├── sunburst_chart.png
       └── sunburst_chart_merged.png
       ```
-
 - **Data Files**:
   - `lda_model/`: Folder with the serialized LDA model.
   - `lda_dictionary.csv`: Dictionary of tokenized words with frequencies.
