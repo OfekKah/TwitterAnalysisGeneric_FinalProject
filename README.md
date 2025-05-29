@@ -223,22 +223,25 @@ The database must include the following tables and columns with the exact names:
 
    - **Output Directory Structure**:
       The code creates a directory named `bertopic_output` containing the following files and subdirectories:
-     bertopic_output/
-   ├── tweet_topic_mapping.csv
-   ├── tweet_merged_topic_mapping.csv
-   ├── tweet_topics_info.csv
-   ├── tweet_topic_terms.csv
-   ├── evaluation_scores.txt
-   ├── tweet_bertopic_model/
-   ├── topic_distribution.png
-   ├── wordclouds_top5_topics.png
-   ├── topic_similarity.html
-   ├── topic_hierarchy.png
-   ├── topics_over_time.html
-   ├── stacked_area_topics_over_time_M.png
-   ├── topics_label_distribution.png
-   ├── sunburst_chart.png
-   └── merged_topics_label_distribution.png
+
+      ```
+      bertopic_output/
+      ├── tweet_topic_mapping.csv
+      ├── tweet_merged_topic_mapping.csv
+      ├── tweet_topics_info.csv
+      ├── tweet_topic_terms.csv
+      ├── evaluation_scores.txt
+      ├── tweet_bertopic_model/
+      ├── topic_distribution.png
+      ├── wordclouds_top5_topics.png
+      ├── topic_similarity.html
+      ├── topic_hierarchy.png
+      ├── topics_over_time.html
+      ├── stacked_area_topics_over_time_M.png
+      ├── topics_label_distribution.png
+      ├── sunburst_chart.png
+      └── merged_topics_label_distribution.png
+      ```
 
 
 - **Data Files**:
