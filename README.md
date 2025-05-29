@@ -24,8 +24,10 @@ The package is designed to process and analyze data efficiently, offering a robu
    - Inside output directory, three TSV files contain the analysis results for each model: emotion_results.tsv, sentiment_results.tsv, and hate_speech_results.tsv. These files include processed data such as authors, dates, content, and calculated statistics related to each respective analysis type.
    - The output directory contains three subdirectories: emotion_analysis_graphs, sentiment_analysis_graphs, and hate_speech_analysis_graphs, which store visual graphs generated from the analysis results.
 3. **Topic Modeling**:
-   - Extracts the main themes from social network group posts using techniques like Latent Dirichlet Allocation (LDA) or Non-Negative Matrix \
-
+- Extracts the main themes from social network group posts using two techniques:
+  - **BERTopic**
+  - **Latent Dirichlet Allocation (LDA)**
+  - 
  - **BERTopic**:
     Generates interpretable topic clusters using UMAP and HDBSCAN. The script splits the dataset into time-based chunks and trains separate BERTopic models for each. It produces visualizations such as intertopic distance maps, topic over time plots, and stacked topic trends. Results are saved as CSVs and images inside `output_analysis/`.
 
