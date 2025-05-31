@@ -556,51 +556,46 @@ def test_save_topic_mapping_creates_csv(tmp_path):
 
 
 
-# --- Top2Vec Tests ---
+# Top2Vec Tests
 
-# from top2vec import Top2Vec
+from top2vec import Top2Vec
 
-# def test_top2vec_model_training_and_topic_extraction():
-#     # Create a small corpus
-#     documents = [
-#         "Cats are cute animals and they purr.",
-#         "Dogs bark and are very loyal pets.",
-#         "Birds can fly and sing beautiful songs.",
-#         "I love pizza with a lot of cheese.",
-#         "Sushi is a delicious Japanese food.",
-#         "Mountains are great for hiking adventures.",
-#         "The ocean is vast and full of marine life.",
-#         "Books are a great source of knowledge.",
-#         "Python is a powerful programming language.",
-#         "Artificial Intelligence is transforming the world."
-#     ]
+def test_top2vec_model_training_and_topic_extraction():
+    # Create a small corpus
+    documents = [
+        "Cats are cute animals and they purr.",
+        "Dogs bark and are very loyal pets.",
+        "Birds can fly and sing beautiful songs.",
+        "I love pizza with a lot of cheese.",
+        "Sushi is a delicious Japanese food.",
+        "Mountains are great for hiking adventures.",
+        "The ocean is vast and full of marine life.",
+        "Books are a great source of knowledge.",
+        "Python is a powerful programming language.",
+        "Artificial Intelligence is transforming the world."
+    ]
     
-#     # Train Top2Vec on the sample data
-#     model = Top2Vec(documents, speed="learn", embedding_model="doc2vec", keep_documents=True)
+    # Train Top2Vec on the sample data
+    model = Top2Vec(documents, speed="learn", embedding_model="doc2vec", keep_documents=True)
 
-#     # Ensure topics were learned
-#     topic_sizes, topic_nums = model.get_topic_sizes()
-#     assert len(topic_sizes) > 0, "No topics were found by Top2Vec"
+    # Ensure topics were learned
+    topic_sizes, topic_nums = model.get_topic_sizes()
+    assert len(topic_sizes) > 0, "No topics were found by Top2Vec"
     
-#     # Check that we can retrieve words for each topic
-#     topic_words, word_scores, topic_nums = model.get_topics()
-#     assert len(topic_words) > 0, "No topic words returned"
-#     for words in topic_words:
-#         assert isinstance(words, list)
-#         assert len(words) > 0, "Each topic should have at least one word"
+    # Check that we can retrieve words for each topic
+    topic_words, word_scores, topic_nums = model.get_topics()
+    assert len(topic_words) > 0, "No topic words returned"
+    for words in topic_words:
+        assert isinstance(words, list)
+        assert len(words) > 0, "Each topic should have at least one word"
 
-# def test_top2vec_model_save_and_load(tmp_path):
-#     documents = ["Data science is fun.", "Graphs and networks are everywhere."]
-#     model = Top2Vec(documents, speed="learn", embedding_model="doc2vec", keep_documents=True)
+def test_top2vec_model_save_and_load(tmp_path):
+    documents = ["Data science is fun.", "Graphs and networks are everywhere."]
+    model = Top2Vec(documents, speed="learn", embedding_model="doc2vec", keep_documents=True)
     
-#     model.save(tmp_path / "test_model")
-#     assert (tmp_path / "test_model").exists()
+    model.save(tmp_path / "test_model")
+    assert (tmp_path / "test_model").exists()
     
-#     loaded_model = Top2Vec.load(tmp_path / "test_model")
-#     assert loaded_model is not None
-#     assert len(loaded_model.get_documents()) == 
-
-
-
-
-
+    loaded_model = Top2Vec.load(tmp_path / "test_model")
+    assert loaded_model is not None
+    assert len(loaded_model.get_documents()) == 
