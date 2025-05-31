@@ -27,7 +27,6 @@ The package is designed to process and analyze data efficiently, offering a robu
 - Extracts the main themes from social network group posts using two techniques:
   - **BERTopic**
   - **Latent Dirichlet Allocation (LDA)**
-  - **BERTopic**
   - **Top2Vec**:
     Generates interpretable topic clusters using UMAP and HDBSCAN. The script splits the dataset into time-based chunks and trains separate BERTopic models for each. It produces visualizations such as intertopic distance maps, topic over time plots, and stacked topic trends. Results are saved as CSVs and images inside `output_analysis/`.
 
