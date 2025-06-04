@@ -25,16 +25,14 @@ The package is designed to process and analyze data efficiently, offering a robu
    - The output directory contains three subdirectories: emotion_analysis_graphs, sentiment_analysis_graphs, and hate_speech_analysis_graphs, which store visual graphs generated from the analysis results.
 3. **Topic Modeling**:
 - Extracts the main themes from social network group posts using two techniques:
-  - **BERTopic**
-  - **Latent Dirichlet Allocation (LDA)**
-  - **Top2vec**
-
-    
+  
   - **BERTopic**:
     Generates interpretable topic clusters using UMAP and HDBSCAN. The script splits the dataset into time-based chunks and trains separate BERTopic models for each. It produces visualizations such as intertopic distance maps, topic over time plots, and stacked topic trends. Results are saved as CSVs and images inside `output_analysis/`.
 
   - **Latent Dirichlet Allocation (LDA)**:
     Applies a classic LDA pipeline with data cleaning, tokenization, stopword removal, and lemmatization. It automatically selects the optimal number of topics based on coherence score and exports word clouds, topic evolution plots, group-wise topic distributions, and an interactive pyLDAvis HTML. Outputs are saved under the `lda_output/` directory.
+
+   - **Top2vec**:
 
 
 ---
@@ -318,7 +316,7 @@ The database must include the following tables and columns with the exact names:
   - Full preprocessing pipeline includes lemmatization and stopword removal.
   - Optimal topic count is selected based on coherence.
   - Group-level visualizations support comparative analysis.
-#### 3.1 Top2Vec
+#### 3.3 Top2Vec
 
 -   **Output Directory Structure**:
     The code creates a directory named `Top2Vec_output` (configurable via `output_dir` in `top2vec_config.yaml`) containing the following files and subdirectories:
