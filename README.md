@@ -33,6 +33,7 @@ The package is designed to process and analyze data efficiently, offering a robu
     Applies a classic LDA pipeline with data cleaning, tokenization, stopword removal, and lemmatization. It automatically selects the optimal number of topics based on coherence score and exports word clouds, topic evolution plots, group-wise topic distributions, and an interactive pyLDAvis HTML. Outputs are saved under the `lda_output/` directory.
 
    - **Top2vec**:
+   Top2Vec automatically identifies themes in text data by mapping words and documents into a shared vector space. The script uses this technique for tweet analysis, incorporating a specialized preprocessing pipeline for social media content. Outputs include topic summaries, word clouds, and visualizations of topic distribution and trends. Topic quality is assessed using coherence scores. Outputs are saved under the `Top2Vec_output/` directory.
 
 
 ---
