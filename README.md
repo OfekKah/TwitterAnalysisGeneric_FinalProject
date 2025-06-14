@@ -1,11 +1,11 @@
-# Social Network Group Analysis Package
+# Social Network Group Analysis Pipeline
 
-This project is a Generic Social Network Group Analysis Package implemented in Python. It allows for the analysis of group interactions on social networks, focusing on:
+This project is a Generic Social Network Group Analysis Pipeline implemented in Python. It allows for the analysis of group interactions on social networks, focusing on:
 - Exploratory Data Analysis (EDA)
 - Sentiment and Emotion Analysis
 - Topic Modeling
 
-The package is designed to process and analyze data efficiently, offering a robust foundation for understanding group behavior, key themes, and sentiment distribution.
+The pipeline is designed to process and analyze data efficiently, offering a robust foundation for understanding group behavior, key themes, and sentiment distribution.
 
 ---
 
@@ -121,35 +121,38 @@ The database must include the following tables and columns with the exact names:
       The code creates a directory named `output_analysis` containing the following files and subdirectories:
       
       ```
-      output_analysis/
-      ├── emotion_results.tsv
-      ├── emotion_checkpoint.pkl
-      ├── sentiment_results.tsv
-      ├── sentiment_checkpoint.pkl
-      ├── hate_speech_results.tsv
-      ├── hate_speech_checkpoint.pkl
+      analysis_output/
       ├── emotion_analysis_graphs/
       │   └── trends_plot.png
+      ├── emotion_results/
+      │   └── emotion_results_partN.csv
+      ├── hate_speech_analysis_graphs/
+      │   └── trends_plot.png
+      ├── hate_speech_results/
+      │   └── hate_speech_results_partN.csv
       ├── sentiment_analysis_graphs/
       │   └── trends_plot.png
-      └── hate_speech_analysis_graphs/
-          └── trends_plot.png
+      ├── sentiment_results/
+      │   └── sentiment_results_partN.csv
+      ├── emotion_checkpoint.pkl
+      ├── hate_speech_checkpoint.pkl
+      └── sentiment_checkpoint.pkl
       ```
    
    
    - **Data Files**:
-      - **Task-Specific Results (TSV Files)**:
-      Each analysis task generates a tab-separated values (TSV) file:
+      - **Task-Specific Results (CSV Files)**:
+      Each analysis task generates a tab-separated values (CSV) file:
       
-      1. `emotion_results.tsv`:
+      1. `emotion_results.csv`:
          - Contains emotion analysis scores for each tweet
          - Columns include: author, new_date, content, and emotion probabilities (joy, sadness, anger, surprise, etc.)
       
-      2. `sentiment_results.tsv`:
+      2. `sentiment_results.csv`:
          - Contains sentiment analysis scores for each tweet
          - Columns include: author, new_date, content, and sentiment probabilities (positive, negative, neutral)
       
-      3. `hate_speech_results.tsv`:
+      3. `hate_speech_results.csv`:
          - Contains hate speech detection scores for each tweet
          - Columns include: author, new_date, content, and hate speech probabilities
       
