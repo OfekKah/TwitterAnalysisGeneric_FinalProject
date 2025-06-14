@@ -13,7 +13,7 @@ max_docs: 10000
 
 
 # Output directory where results will be saved (plots, model, CSVs, etc.)
-output_dir: "./top2vec_output_3"
+output_dir: "./top2vec_output"
 
 # Log file path for recording progress and errors
 log_file: "top2vec_run.log"
