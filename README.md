@@ -21,7 +21,7 @@ The pipeline is designed to process and analyze data efficiently, offering a rob
    - Performs analysis using three pre-trained deep learning models for `sentiment`, `emotion`, and `hate speech` detection.
    - Detects sentiment polarity (positive/negative/neutral) and emotion probabilities (e.g., joy, sadness, anger).
    - The output of running the model is saved in a dedicated directory.
-   - Inside output directory, three TSV files contain the analysis results for each model: emotion_results.tsv, sentiment_results.tsv, and hate_speech_results.tsv. These files include processed data such as authors, dates, content, and calculated statistics related to each respective analysis type.
+   - Inside output directory, three CSV files contain the analysis results for each model: emotion_results.csv, sentiment_results.csv, and hate_speech_results.csv. These files include processed data such as authors, dates, content, and calculated statistics related to each respective analysis type.
    - The output directory contains three subdirectories: emotion_analysis_graphs, sentiment_analysis_graphs, and hate_speech_analysis_graphs, which store visual graphs generated from the analysis results.
 3. **Topic Modeling**:
 - Extracts the main themes from social network group posts using two techniques:
@@ -218,7 +218,7 @@ The database must include the following tables and columns with the exact names:
          - Dates are standardized to ensure consistent temporal analysis
   
       - **Requirements for Viewing Outputs**:
-         - TSV files can be opened with any spreadsheet software (Excel, Google Sheets, etc.)
+         - CSV files can be opened with any spreadsheet software (Excel, Google Sheets, etc.)
          - PNG files can be viewed with any image viewer
          - Checkpoint files (.pkl) are binary files used by the program and not meant for direct viewing
       ---
