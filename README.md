@@ -121,7 +121,7 @@ The database must include the following tables and columns with the exact names:
       The code creates a directory named `output_analysis` containing the following files and subdirectories:
       
       ```
-      analysis_output/
+      emotion_hate_sentiment_output/
       ├── emotion_analysis_graphs/
       │   └── trends_plot.png
       ├── emotion_results/
