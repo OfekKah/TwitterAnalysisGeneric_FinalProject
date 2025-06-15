@@ -21,4 +21,4 @@ pyyaml
 pytest
 kaleido==0.2.1
 import_ipynb
-openai
+top2vec
